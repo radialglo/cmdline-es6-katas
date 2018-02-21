@@ -1,0 +1,4 @@
+.*.sw*
+
+# Dependency directories
+node_modules/
