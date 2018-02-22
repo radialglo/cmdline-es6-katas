@@ -5,14 +5,14 @@ let assert = require('chai').assert
 describe('inside a class use `super` to access parent methods', () => {
 
   it('use of `super` without `extends` fails (already when transpiling)', () => {
-    class A {hasSuper() { return super; }}
+    class A {hasSuper() { return false; }}
     
     assert.equal(new A().hasSuper(), false);
   });
   
   it('`super` with `extends` calls the method of the given name of the parent class', () => {
     class A {hasSuper() { return true; }}
-    class B extends A {hasSuper() { return super.hasSuper; }}
+    class B extends A {hasSuper() { return super.hasSuper(); }}
     
     assert.equal(new B().hasSuper(), true);
   });
@@ -29,7 +29,7 @@ describe('inside a class use `super` to access parent methods', () => {
     class B extends A {constructor() { super(); this.youAreSuper = true; } }
     class C extends B {
       iAmSuper() { 
-        return this.iAmSuper(); 
+        return super.iAmSuper(); 
       }
     }
     
@@ -38,7 +38,7 @@ describe('inside a class use `super` to access parent methods', () => {
   
   it('accessing an undefined member of the parent class returns `undefined`', () => {
     class A {}
-    class B extends A {getMethod() { return super.constructor; }}
+    class B extends A {getMethod() { return super.getMethod; }}
     
     assert.equal(new B().getMethod(), void 0);
   });
