@@ -6,14 +6,15 @@ describe('on tagged template strings you can use the `raw` property like so `s.r
   
   it('the `raw` property accesses the string as it was entered', function() {
     function firstChar(strings) {
-      return strings;
+      return strings.raw;
     }
     assert.equal(firstChar`\n`, '\\n');
   });
 
   it('`raw` can access the backslash of a line-break', function() {
     function firstCharEntered(strings) {
-      var lineBreak = strings.raw;
+     // strings.raw still returns an array
+      var lineBreak = strings.raw[0][0];
       return lineBreak;
     }
     assert.equal(firstCharEntered`\n`, '\\');
@@ -22,17 +23,17 @@ describe('on tagged template strings you can use the `raw` property like so `s.r
   describe('`String.raw` as a static function', function(){
     
     it('concats the raw strings', function() {
-      var expected = '\n';
+      var expected = '\\n';
       assert.equal(String.raw`\n`, expected);
     });
     
     it('two raw-templates-string-backslashes equal two escaped backslashes', function() {
-      const TWO_BACKSLASHES = '\\';
+      const TWO_BACKSLASHES = '\\\\';
       assert.equal(String.raw`\\`, TWO_BACKSLASHES);
     });
     
     it('works on unicodes too', function() {
-      var smilie = '\u{1F600}';
+      var smilie = '\\u{1F600}';
       var actual = String.raw`\u{1F600}`;
       assert.equal(actual, smilie);
     });
