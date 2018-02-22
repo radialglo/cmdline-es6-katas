@@ -6,12 +6,12 @@ class LexicallyBound {
   
   getFunction() {
     return () => {
-      return new LexicallyBound();
+      return this;
     }
   }
   
   getArgumentsFunction() {
-    return function() {return arguments}
+    return () => {return arguments}
   }
   
 }
@@ -29,7 +29,7 @@ describe('arrow functions have lexical `this`, no dynamic `this`', () => {
     var bound = new LexicallyBound();
     var fn = bound.getFunction();
     var anotherObj = {};
-    var expected = anotherObj;
+    var expected = fn();
     
     assert.strictEqual(fn.call(anotherObj), expected);
   });
