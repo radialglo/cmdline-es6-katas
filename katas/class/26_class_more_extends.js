@@ -5,7 +5,7 @@ let assert = require('chai').assert
 describe('class can inherit from another', () => {
 
   it('extend an `old style` "class", a function, still works', () => {
-    let A;
+    function A() {};
     class B extends A {}
     
     assert.equal(new B() instanceof A, true);
@@ -15,11 +15,12 @@ describe('class can inherit from another', () => {
     class A {}
     class B extends A {}
     it('A is the prototype of B', () => {
-      const isIt = A.isPrototypeOf(null);
+      const isIt = A.isPrototypeOf(B);
       assert.equal(isIt, true);
     });
     it('A`s prototype is also B`s prototype', () => {
-      const proto = B;
+      // hard
+      const proto = B.prototype; // or new B()
       // Remember: don't touch the assert!!! :)
       assert.equal(A.prototype.isPrototypeOf(proto), true);
     });
@@ -28,14 +29,15 @@ describe('class can inherit from another', () => {
   describe('`extends` using an expression', () => {
     it('eg the inline assignment of the parent class', () => {
       let A;
-      class B extends (A = {}) {}
+      // hard: A should be assigned a constructor
+      class B extends (A = Object ) {}
       
       assert.equal(new B() instanceof A, true);
     });
     
     it('or calling a function that returns the parent class', () => {
       const returnParent = (beNull) => beNull ? null : class {};
-      class B extends (returnParent) {}
+      class B extends (returnParent(true)) {}
       
       assert.equal(Object.getPrototypeOf(B.prototype), null);
     });
