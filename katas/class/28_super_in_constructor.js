@@ -6,8 +6,9 @@ describe('class', () => {
 
   it('if you `extend` a class, use `super()` to call the parent constructor', () => {
     class A {constructor() { this.levels = 1; }}
-    class B {
+    class B extends A {
       constructor() {
+        super()
         this.levels++; 
       }
     }
@@ -19,7 +20,7 @@ describe('class', () => {
     class A {constructor(startValue=1, addTo=1) { this.counter = startValue + addTo; }}
     class B extends A {
       constructor(...args) { 
-        super();
+        super(...args);
         this.counter++; 
       }
     }
@@ -31,8 +32,8 @@ describe('class', () => {
     class A {inc() { this.countUp = 1; }}
     class B extends A {
       inc() { 
+        this.countUp = 2;
         super.inc();
-        this.countUp = 2; 
         return this.countUp;
       }
     }
@@ -41,10 +42,12 @@ describe('class', () => {
   });
 
   it('use `super.constructor` to find out if there is a parent constructor', () => {
-    class A extends null {
+    // I can't access super properties without calling the parent constructor => ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+    // But I can't call the super constructor if I extend null, since null is not a constructor
+    class A extends Object {
       constructor() {
         super();
-        this.isTop = !!super.constructor;
+        this.isTop = !(!!super.constructor);
       }
     }
 
