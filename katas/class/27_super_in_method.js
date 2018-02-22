@@ -19,7 +19,7 @@ describe('inside a class use `super` to access parent methods', () => {
   
   it('when overridden a method does NOT automatically call its super method', () => {
     class A {hasSuper() { return true; }}
-    class B extends A {hasSuper() { return 'nothing'; }}
+    class B extends A {hasSuper() {}}
     
     assert.equal(new B().hasSuper(), void 0);
   });
