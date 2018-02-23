@@ -5,7 +5,7 @@ let assert = require('chai').assert
 describe('rest with destructuring', () => {
     
   it('rest parameter must be last', () => {
-    const [...all, last] = [1, 2, 3, 4];
+    const [last, ...all] = [1, 2, 3, 4];
     assert.deepEqual(all, [1, 2, 3, 4]);
   });
   

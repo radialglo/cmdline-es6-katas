@@ -5,7 +5,7 @@ let assert = require('chai').assert
 describe('destructuring can also have default values', () => {
 
   it('for an empty array', () => {
-    const [a:1] = [];
+    const [a=1] = [];
     assert.equal(a, 1);
   });
 

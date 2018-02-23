@@ -5,7 +5,7 @@ let assert = require('chai').assert
 describe('rest in function params', () => {
     
   it('must be the last parameter', () => {
-    const fn = (...rest, veryLast) => {
+    const fn = (veryLast, ...rest) => {
       assert.deepEqual([1, 2], rest);
     };
     fn(1, 2);
