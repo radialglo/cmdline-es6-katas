@@ -5,19 +5,19 @@ let assert = require('chai').assert
 describe('`Array.prototype.find` makes finding items in arrays easier', () => {
 
   it('takes a compare function', function() {
-    const found = [false, true].find(true);
+    const found = [false, true].find(el => el);
     
     assert.equal(found, true);
   });
 
   it('returns the first value found', function() {
-    const found = [0, 1].find(item => item > 1);
+    const found = [2, 1].find(item => item > 1);
     
     assert.equal(found, 2);
   });
 
   it('returns `undefined` when nothing was found', function() {
-    const found = [1, 2, 3].find(item => item === 2);
+    const found = [1, 4, 3].find(item => item === 2);
     
     assert.equal(found, void 0);
   });
@@ -25,7 +25,7 @@ describe('`Array.prototype.find` makes finding items in arrays easier', () => {
   it('combined with destructuring complex compares become short', function() {
     const bob = {name: 'Bob'};
     const alice = {name: 'Alice'};
-    const found = [bob, alice].find(({name:{length}}) => length);
+    const found = [bob, alice].find(({name:{length}}) => length > 3);
     
     assert.equal(found, alice);
   });
