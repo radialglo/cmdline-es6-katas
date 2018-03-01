@@ -7,11 +7,11 @@ describe('chaining multiple promises can enhance readability', () => {
   describe('prerequisites for understanding', function() {
     
     it('reminder: the test passes when a fulfilled promise is returned', function() {
-      return Promise.reject('I should fulfill.');
+      return Promise.resolve('I should fulfill.');
     });
   
     it('a function given to `then()` fulfills (if it doesnt throw)', function() {
-      const beNice = () => { throw new Error('I am nice') };
+      const beNice = () => { return 'I am nice' };
       return Promise.resolve()
         .then(beNice)
         .then(niceMessage => assert.equal(niceMessage, 'I am nice'));
@@ -26,7 +26,7 @@ describe('chaining multiple promises can enhance readability', () => {
     it('`then()` receives the result of the promise it was called on', function() {
       const wordsPromise = Promise.resolve('one   space     between each     word');
       return wordsPromise
-        .then(string => removeMultipleSpaces())
+        .then(string => removeMultipleSpaces(string))
         .then(actual => {assert.equal(actual, 'one space between each word')})
       ;
     });
@@ -37,6 +37,7 @@ describe('chaining multiple promises can enhance readability', () => {
       const wordsPromise = Promise.resolve('Sentence without       an end');
       return wordsPromise
         .then(removeMultipleSpaces)
+        .then(string => appendPeriod(string))
         .then(actual => {assert.equal(actual, 'Sentence without an end.')})
       ;
     });
@@ -46,8 +47,8 @@ describe('chaining multiple promises can enhance readability', () => {
     it('order of the `then()`s matters', function() {
       const wordsPromise = Promise.resolve('Sentence without       an end ');
       return wordsPromise
-        .then(appendPeriod)
         .then(trim)
+        .then(appendPeriod)
         .then(removeMultipleSpaces)
         .then(actual => {assert.equal(actual, 'Sentence without an end.')})
       ;
@@ -71,8 +72,8 @@ describe('chaining multiple promises can enhance readability', () => {
       const wordsPromise = Promise.resolve('trailing space   ');
       return wordsPromise
         .then(string => new Promise(resolve => asyncUpperCaseStart(string, resolve)))
-        .then(string => new Promise(resolve => setTimeout(() => resolve(appendPeriod(string)), 100)))
         .then(string => new Promise(resolve => setTimeout(() => resolve(trim(string)), 100)))
+        .then(string => new Promise(resolve => setTimeout(() => resolve(appendPeriod(string)), 100)))
         .then(actual => {assert.equal(actual, 'Trailing space.')})
       ;
     });
