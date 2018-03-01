@@ -7,11 +7,16 @@
     "mocha-jsdom": "^1.1.0"
   },
   "scripts": {
-    "watch": "mocha -R nyan -w katas/**/**",
-    "test": "mocha -R nyan katas/**/**"
+    "watch": "mocha --compilers js:babel-core/register -R nyan -w katas/**/**",
+    "test": "mocha --compilers js:babel-core/register -R nyan katas/**/**"
   },
   "devDependencies": {
     "jsdom": "11.6.2",
-    "jsdom-global": "3.0.2"
+    "jsdom-global": "3.0.2",
+    "babel-core": "6.26.0",
+    "babel-preset-env": "1.6.0"
+  },
+  "babel": {
+    "presets": ["env"]
   }
 }
