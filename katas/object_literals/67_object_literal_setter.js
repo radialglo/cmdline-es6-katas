@@ -8,7 +8,7 @@ describe('An object literal can also contain setters', () => {
     it('by prefixing the property with `set` (and make it a function)', function() {
       let theX = null;
       const obj = {
-        x(newX) { theX = newX; }
+        set x(newX) { theX = newX; }
       };
       
       obj.x = 'the new X';
@@ -17,7 +17,7 @@ describe('An object literal can also contain setters', () => {
     it('must have exactly one parameter', function() {
       let setterCalledWith = void 0;
       const obj = {
-        x() { // <<<<=== it's not a setter yet! 
+        set x(foo) { // <<<<=== it's not a setter yet! 
           if (arguments.length === 1) {
             setterCalledWith = arguments[0];
           }
@@ -27,10 +27,10 @@ describe('An object literal can also contain setters', () => {
       assert.equal(obj.x = 'new value', setterCalledWith);
     });
     it('can be a computed property (an expression enclosed in `[]`)', function() {
-      const publicPropertyName = 'x';gg
+      const publicPropertyName = 'x';
       const privatePropertyName = '_' + publicPropertyName;
       const obj = {
-        [privatePropertyName]: null
+        set [publicPropertyName](x)  { this[privatePropertyName] = x }
         // write the complete setter to make the assert below pass :)
       };
       
@@ -49,6 +49,7 @@ describe('An object literal can also contain setters', () => {
       
       // delete the property x here, to make the test pass
       
+      delete obj.x
       obj.x = true;
       assert.equal(setterCalled, false);
     });
